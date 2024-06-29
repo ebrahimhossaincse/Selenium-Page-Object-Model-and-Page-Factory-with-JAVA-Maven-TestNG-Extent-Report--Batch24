@@ -10,6 +10,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.ebrahim.hossain.drivers.PageDriver;
 import com.ebrahim.hossain.utilities.CommonMethods;
+import com.ebrahim.hossain.utilities.ExcelUtils;
 import com.ebrahim.hossain.utilities.GetScreenShot;
 
 public class LoginPage extends CommonMethods {
@@ -19,7 +20,7 @@ public class LoginPage extends CommonMethods {
 	 */
 
 	ExtentTest test;
-
+	ExcelUtils excelUtils = new ExcelUtils();
 	public LoginPage(ExtentTest test) {
 		PageFactory.initElements(PageDriver.getCurrentDriver(), this);
 		this.test = test;
@@ -66,16 +67,18 @@ public class LoginPage extends CommonMethods {
 	}
 
 	public void login() throws IOException {
+		testDataGenerator();
+		excelUtils.ReadExcel();
 		try {
 			test.info("Please enter your email address");
 			if (userEmail.isDisplayed()) {
-				userEmail.sendKeys("devina54@navalcadets.com");
+				userEmail.sendKeys(excelUtils.email);
 				passCase("You have successfully entered your email");
 				timeout(3000);
 				try {
 					test.info("Please enter your password");
 					if (password.isDisplayed()) {
-						password.sendKeys("Test@123456");
+						password.sendKeys(excelUtils.password);
 						passCase("You have successfully entered your password");
 						timeout(3000);
 						try {
